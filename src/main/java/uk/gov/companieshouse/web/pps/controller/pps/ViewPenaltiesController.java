@@ -63,12 +63,12 @@ public class ViewPenaltiesController extends BaseController {
     }
 
     @PostMapping
-    public String postPenalties(@PathVariable String companyNumber,
+    public String postViewPenalties(@PathVariable String companyNumber,
             @PathVariable String penaltyRef,
             HttpServletRequest request) {
 
         try {
-            return viewPenaltiesService.postPenalties(companyNumber, penaltyRef);
+            return viewPenaltiesService.postViewPenalties(companyNumber, penaltyRef);
         } catch (ServiceException e) {
             LOGGER.errorRequest(request, e.getMessage(), e);
             return REDIRECT_URL_PREFIX
