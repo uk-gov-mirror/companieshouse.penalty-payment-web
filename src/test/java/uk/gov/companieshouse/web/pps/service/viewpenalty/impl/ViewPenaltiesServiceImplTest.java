@@ -333,8 +333,8 @@ class ViewPenaltiesServiceImplTest {
 
     @ParameterizedTest
     @MethodSource("penaltyTestDataProvider")
-    @DisplayName("Post Penalty - successful")
-    void postPenaltiesSuccessful(PenaltyTestData penaltyTestData) throws Exception {
+    @DisplayName("Post View Penalty - successful")
+    void postViewPenaltiesSuccessful(PenaltyTestData penaltyTestData) throws Exception {
 
         List<FinancialPenalty> mockPenalties = new ArrayList<>();
         mockPenalties.add(
@@ -351,7 +351,7 @@ class ViewPenaltiesServiceImplTest {
                 penaltyTestData.customerCode(),
                 penaltyTestData.penaltyRef())).thenReturn(MOCK_PAYMENTS_URL);
 
-        String serviceResponse = viewPenaltiesService.postPenalties(
+        String serviceResponse = viewPenaltiesService.postViewPenalties(
                 penaltyTestData.customerCode(),
                 penaltyTestData.penaltyRef());
 
@@ -360,21 +360,21 @@ class ViewPenaltiesServiceImplTest {
     }
 
     @Test
-    @DisplayName("Post Penalty - exception when get financial penalties")
-    void postPenaltiesFinancialPenaltiesException() throws Exception {
+    @DisplayName("Post View Penalty - exception when get financial penalties")
+    void postViewPenaltiesFinancialPenaltiesException() throws Exception {
 
         doThrow(ServiceException.class).when(mockPenaltyPaymentService)
                 .getFinancialPenalties(COMPANY_NUMBER,
                         LFP_PENALTY_REF);
 
         assertThrowsExactly(ServiceException.class,
-                () -> viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+                () -> viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                         LFP_PENALTY_REF));
     }
 
     @Test
-    @DisplayName("Post Penalty - not a single payable penalty")
-    void postPenaltiesNotSinglePayablePenalty() throws Exception {
+    @DisplayName("Post View Penalty - not a single payable penalty")
+    void postViewPenaltiesNotSinglePayablePenalty() throws Exception {
 
         List<FinancialPenalty> mockMultiplePenalties = new ArrayList<>();
         mockMultiplePenalties.add(
@@ -388,15 +388,15 @@ class ViewPenaltiesServiceImplTest {
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER,
                 LFP_PENALTY_REF)).thenReturn(mockMultiplePenalties);
 
-        String serviceResponse = viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+        String serviceResponse = viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                 LFP_PENALTY_REF);
 
         assertEquals(REDIRECT_URL_PREFIX + UNSCHEDULED_SERVICE_DOWN_PATH, serviceResponse);
     }
 
     @Test
-    @DisplayName("Post Penalty - no open penalty")
-    void postPenaltiesNoOpenPenalty() throws Exception {
+    @DisplayName("Post View Penalty - no open penalty")
+    void postViewPenaltiesNoOpenPenalty() throws Exception {
 
         List<FinancialPenalty> mockPenalties = new ArrayList<>();
         mockPenalties.add(
@@ -407,15 +407,15 @@ class ViewPenaltiesServiceImplTest {
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER,
                 LFP_PENALTY_REF)).thenReturn(mockPenalties);
 
-        String serviceResponse = viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+        String serviceResponse = viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                 LFP_PENALTY_REF);
 
         assertEquals(REDIRECT_URL_PREFIX + UNSCHEDULED_SERVICE_DOWN_PATH, serviceResponse);
     }
 
     @Test
-    @DisplayName("Post Penalty - disabled penalty")
-    void postPenaltiesDisabledPenalty() throws Exception {
+    @DisplayName("Post View Penalty - disabled penalty")
+    void postViewPenaltiesDisabledPenalty() throws Exception {
 
         List<FinancialPenalty> mockPenalties = new ArrayList<>();
         mockPenalties.add(
@@ -425,7 +425,7 @@ class ViewPenaltiesServiceImplTest {
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER,
                 CS_PENALTY_REF)).thenReturn(mockPenalties);
 
-        String serviceResponse = viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+        String serviceResponse = viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                 CS_PENALTY_REF);
 
         assertEquals(REDIRECT_URL_PREFIX + String.format(ONLINE_PAYMENT_UNAVAILABLE_PATH,
@@ -433,8 +433,8 @@ class ViewPenaltiesServiceImplTest {
     }
 
     @Test
-    @DisplayName("Post Penalty - create payable penalty financial session exception")
-    void postPenaltiesCreatePayablePenaltySessionException() throws Exception {
+    @DisplayName("Post View Penalty - create payable penalty financial session exception")
+    void postViewPenaltiesCreatePayablePenaltySessionException() throws Exception {
 
         List<FinancialPenalty> mockPenalties = new ArrayList<>();
         mockPenalties.add(
@@ -449,13 +449,13 @@ class ViewPenaltiesServiceImplTest {
                         LFP_PENALTY_REF, VALID_AMOUNT);
 
         assertThrowsExactly(ServiceException.class,
-                () -> viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+                () -> viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                         LFP_PENALTY_REF));
     }
 
     @Test
-    @DisplayName("Post Penalty - create payment session exception")
-    void postPenaltiesCreatePaymentSessionException() throws Exception {
+    @DisplayName("Post View Penalty - create payment session exception")
+    void postViewPenaltiesCreatePaymentSessionException() throws Exception {
 
         List<FinancialPenalty> mockPenalties = new ArrayList<>();
         mockPenalties.add(
@@ -472,7 +472,7 @@ class ViewPenaltiesServiceImplTest {
                         LFP_PENALTY_REF);
 
         assertThrowsExactly(ServiceException.class,
-                () -> viewPenaltiesService.postPenalties(COMPANY_NUMBER,
+                () -> viewPenaltiesService.postViewPenalties(COMPANY_NUMBER,
                         LFP_PENALTY_REF));
     }
 
