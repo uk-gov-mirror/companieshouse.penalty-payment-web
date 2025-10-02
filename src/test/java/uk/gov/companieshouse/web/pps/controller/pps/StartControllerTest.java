@@ -52,11 +52,9 @@ class StartControllerTest {
     @Mock
     private FinanceServiceHealthCheck mockFinanceServiceHealthCheck;
 
-    private static final String LEGACY_START_PATH = "/late-filing-penalty";
-    private static final String LEGACY_START_PATH_PARAM = "/late-filing-penalty?start=0";
     private static final String PAY_PENALTY_START_PATH = "/pay-penalty";
     private static final String PAY_PENALTY_START_PATH_PARAM = "/pay-penalty?start=0";
-    private static final String PENALTY_REF_STARTS_WITH_PATH = REDIRECT_URL_PREFIX + "/late-filing-penalty/ref-starts-with";
+    private static final String PENALTY_REF_STARTS_WITH_PATH = REDIRECT_URL_PREFIX + "/pay-penalty/ref-starts-with";
 
     @BeforeEach
     void setup() {
@@ -66,21 +64,6 @@ class StartControllerTest {
                 mockPenaltyConfigurationProperties,
                 mockFinanceServiceHealthCheck);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setViewResolvers(viewResolver()).build();
-    }
-
-    @Test
-    @DisplayName("Get start page - redirect to GOV UK Pay Penalty - Start now page")
-    void getOldStartPathRequestRedirectToGovUkPayPenalty() throws Exception {
-
-        PPSServiceResponse serviceResponse = getPpsServiceResponse(REDIRECT_URL_PREFIX + GOV_UK_PAY_PENALTY_URL);
-
-        when(mockFinanceServiceHealthCheck.checkIfAvailableAtStart(any())).thenReturn(serviceResponse);
-
-        mockMvc.perform(get(LEGACY_START_PATH))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(REDIRECT_URL_PREFIX + GOV_UK_PAY_PENALTY_URL));
-
-        verifyNoMoreInteractions(mockFinanceServiceHealthCheck);
     }
 
     @Test
@@ -125,21 +108,6 @@ class StartControllerTest {
         mockMvc.perform(get(PAY_PENALTY_START_PATH))
                 .andExpect(status().isOk())
                 .andExpect(view().name(SERVICE_UNAVAILABLE_VIEW_NAME));
-
-        verifyNoMoreInteractions(mockFinanceServiceHealthCheck);
-    }
-
-    @Test
-    @DisplayName("Get legacy start path param - redirect to penalty ref starts with")
-    void getLegacyStartPathParamRequestRedirectToPenaltyRefStartsWithWhenVisitFromGovUk() throws Exception {
-
-        PPSServiceResponse serviceResponse = getPpsServiceResponse(PENALTY_REF_STARTS_WITH_PATH);
-
-        when(mockFinanceServiceHealthCheck.checkIfAvailableAtStart(any())).thenReturn(serviceResponse);
-
-        mockMvc.perform(get(LEGACY_START_PATH_PARAM))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name(PENALTY_REF_STARTS_WITH_PATH));
 
         verifyNoMoreInteractions(mockFinanceServiceHealthCheck);
     }
