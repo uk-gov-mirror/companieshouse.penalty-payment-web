@@ -34,13 +34,6 @@ class WebSecurityTests {
     }
 
     @Test
-    @DisplayName(" apply security filter to /late-filing-penalty")
-    void legacyStartPageSecurityFilterChainTest() throws Exception {
-        when(httpSecurity.securityMatcher("/late-filing-penalty")).thenReturn(httpSecurity);
-        assertEquals(webSecurity.legacyStartPageSecurityFilterChain(httpSecurity), httpSecurity.build());
-    }
-
-    @Test
     @DisplayName(" apply security filter to /pay-penalty")
     void temporaryStartPageSecurityFilterChainTest() throws Exception {
         when(httpSecurity.securityMatcher("/pay-penalty")).thenReturn(httpSecurity);

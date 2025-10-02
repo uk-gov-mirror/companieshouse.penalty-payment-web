@@ -30,7 +30,6 @@ public class PPSWebApplication implements WebMvcConfigurer {
         registry.addInterceptor(loggingInterceptor);
         registry.addInterceptor(userDetailsInterceptor)
                 .excludePathPatterns(
-                        "/late-filing-penalty",
                         "/pay-penalty",
                         "/error",
                         "/pay-penalty/ref-starts-with",

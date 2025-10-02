@@ -21,14 +21,6 @@ public class WebSecurity {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain legacyStartPageSecurityFilterChain(final HttpSecurity http) throws Exception {
-        return configureWebCsrfMitigations(
-                http.securityMatcher("/late-filing-penalty")
-        ).build();
-    }
-
-    @Bean
-    @Order(2)
     public SecurityFilterChain temporaryStartPageSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/pay-penalty")
@@ -36,7 +28,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(3)
+    @Order(2)
     public SecurityFilterChain penaltyRefStartsWithPageSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/pay-penalty/ref-starts-with")
@@ -44,7 +36,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(4)
+    @Order(3)
     public SecurityFilterChain healthcheckSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureApiCsrfMitigations(
                 http.securityMatcher("/pay-penalty/healthcheck")
@@ -52,7 +44,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(5)
+    @Order(4)
     public SecurityFilterChain scheduledServiceDownSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/pay-penalty/unscheduled-service-down")
@@ -60,7 +52,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(6)
+    @Order(5)
     public SecurityFilterChain pageNotFoundSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/pay-penalty/page-not-found")
@@ -68,7 +60,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(7)
+    @Order(6)
     public SecurityFilterChain errorPageSecurityFilterChain(final HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/error")
@@ -76,7 +68,7 @@ public class WebSecurity {
     }
 
     @Bean
-    @Order(8)
+    @Order(7)
     public SecurityFilterChain ppsWebSecurityFilterConfig(HttpSecurity http) throws Exception {
         return configureWebCsrfMitigations(
                 http.securityMatcher("/pay-penalty/**")

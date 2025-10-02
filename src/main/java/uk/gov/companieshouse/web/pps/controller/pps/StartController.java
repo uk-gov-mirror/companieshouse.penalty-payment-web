@@ -20,7 +20,7 @@ import static uk.gov.companieshouse.web.pps.controller.pps.PenaltyRefStartsWithC
 
 @Controller
 @NextController(PenaltyRefStartsWithController.class)
-@RequestMapping({"/pay-penalty", "/late-filing-penalty"})
+@RequestMapping("/pay-penalty")
 public class StartController extends BaseController {
 
     private final FinanceServiceHealthCheck financeServiceHealthCheck;
