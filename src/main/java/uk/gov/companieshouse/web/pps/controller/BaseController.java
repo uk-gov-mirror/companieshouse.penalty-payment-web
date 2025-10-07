@@ -31,6 +31,7 @@ public abstract class BaseController {
     public static final String HIDE_YOUR_DETAILS_ATTR = "hideYourDetails";
     public static final String HIDE_RECENT_FILINGS_ATTR = "hideRecentFilings";
     public static final String PHASE_BANNER_ATTR = "phaseBanner";
+    public static final String PHASE_BANNER_NEW_CONTENT_ATTR = "phaseBannerNewContent";
     public static final String PHASE_BANNER_LINK_ATTR = "phaseBannerLink";
 
     protected final NavigatorService navigatorService;
@@ -93,6 +94,7 @@ public abstract class BaseController {
 
     protected void addPhaseBannerToModel(Model model, String surveyLink) {
         model.addAttribute(PHASE_BANNER_ATTR, "Beta");
+        model.addAttribute(PHASE_BANNER_NEW_CONTENT_ATTR, "Yes");
         model.addAttribute(PHASE_BANNER_LINK_ATTR, surveyLink);
     }
 
