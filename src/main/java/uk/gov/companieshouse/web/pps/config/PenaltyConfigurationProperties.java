@@ -19,6 +19,7 @@ public class PenaltyConfigurationProperties {
     private String signOutPath;
     private String surveyLink;
     private String serviceBannerLink;
+    private String serviceBannerText;
     private String startPath;
     private String signedOutUrl;
     private String govUkPayPenaltyUrl;
@@ -83,6 +84,14 @@ public class PenaltyConfigurationProperties {
 
     public void setServiceBannerLink(String serviceBannerLink) {
         this.serviceBannerLink = serviceBannerLink;
+    }
+
+    public String getServiceBannerText() {
+        return serviceBannerText;
+    }
+
+    public void setServiceBannerText(String serviceBannerText) {
+        this.serviceBannerText = serviceBannerText;
     }
 
     public String getStartPath() {

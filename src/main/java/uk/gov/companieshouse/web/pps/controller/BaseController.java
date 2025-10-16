@@ -28,6 +28,8 @@ public abstract class BaseController {
     public static final String USER_BAR_ATTR = "userBar";
     public static final String USER_EMAIL_ATTR = "userEmail";
     public static final String USER_SIGN_OUT_URL_ATTR = "userSignoutUrl";
+    public static final String HEADER_TEXT_ATTR = "headerText";
+    public static final String HEADER_URL_ATTR = "headerURL";
     public static final String HIDE_YOUR_DETAILS_ATTR = "hideYourDetails";
     public static final String HIDE_RECENT_FILINGS_ATTR = "hideRecentFilings";
     public static final String PHASE_BANNER_ATTR = "phaseBanner";
@@ -57,6 +59,7 @@ public abstract class BaseController {
 
     protected void addBaseAttributesToModel(Model model, String backUrl, String signOutUrl) {
         addPhaseBannerToModel(model, penaltyConfigurationProperties.getSurveyLink());
+        addServiceBannerToModel(model);
         addUserModel(model, signOutUrl);
         addBackPageAttributeToModel(model, backUrl);
     }
@@ -64,6 +67,7 @@ public abstract class BaseController {
     protected void addBaseAttributesWithoutBackToModel(Model model, Map<String, Object> sessionData,
             String signOutUrl) {
         addPhaseBannerToModel(model, penaltyConfigurationProperties.getSurveyLink());
+        addServiceBannerToModel(model);
         addUserModel(model, signOutUrl, sessionData);
     }
 
@@ -98,6 +102,11 @@ public abstract class BaseController {
         model.addAttribute(PHASE_BANNER_LINK_ATTR, surveyLink);
     }
 
+    protected void addServiceBannerToModel(Model model) {
+        model.addAttribute(HEADER_URL_ATTR, penaltyConfigurationProperties.getServiceBannerLink());
+        model.addAttribute(HEADER_TEXT_ATTR, penaltyConfigurationProperties.getServiceBannerText());
+    }
+
     protected static void addAttributesToModel(Model model, Map<String, Object> attributes) {
         for (Map.Entry<String, Object> itr : attributes.entrySet()) {
             model.addAttribute(itr.getKey(), itr.getValue());
@@ -111,6 +120,7 @@ public abstract class BaseController {
             } else if (attributes.containsKey(SIGN_OUT_URL_ATTR)) {
                 addBaseAttributesWithoutBackUrlToModel(model, attributes.get(SIGN_OUT_URL_ATTR));
             }
+            addServiceBannerToModel(model);
         });
     }
 
