@@ -28,7 +28,6 @@ public abstract class BaseController {
     public static final String USER_BAR_ATTR = "userBar";
     public static final String USER_EMAIL_ATTR = "userEmail";
     public static final String USER_SIGN_OUT_URL_ATTR = "userSignoutUrl";
-    public static final String SWITCH_SIGN_OUT_BACKLINK_ATTR = "switchUserBarAndBacklink";
     public static final String HEADER_TEXT_ATTR = "headerText";
     public static final String HEADER_URL_ATTR = "headerURL";
     public static final String HIDE_YOUR_DETAILS_ATTR = "hideYourDetails";
@@ -78,13 +77,11 @@ public abstract class BaseController {
 
     protected void addUserModel(Model model, String signOutUrl) {
         String loginEmail = PenaltyUtils.getLoginEmail(sessionService.getSessionDataFromContext());
-        model.addAttribute(SWITCH_SIGN_OUT_BACKLINK_ATTR, "1");
         addEmailAttributes(model, signOutUrl, loginEmail);
     }
 
     protected void addUserModel(Model model, String signOutUrl, Map<String, Object> sessionData) {
         String loginEmail = PenaltyUtils.getLoginEmail(sessionData);
-        model.addAttribute(SWITCH_SIGN_OUT_BACKLINK_ATTR, "1");
         addEmailAttributes(model, signOutUrl, loginEmail);
     }
 
@@ -123,7 +120,6 @@ public abstract class BaseController {
             } else if (attributes.containsKey(SIGN_OUT_URL_ATTR)) {
                 addBaseAttributesWithoutBackUrlToModel(model, attributes.get(SIGN_OUT_URL_ATTR));
             }
-            model.addAttribute(SWITCH_SIGN_OUT_BACKLINK_ATTR, "1");
             addServiceBannerToModel(model);
         });
     }
