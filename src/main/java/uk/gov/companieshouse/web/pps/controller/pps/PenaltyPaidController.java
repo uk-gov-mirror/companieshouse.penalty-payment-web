@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.web.pps.controller.pps;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +34,9 @@ public class PenaltyPaidController extends BaseController {
             NavigatorService navigatorService,
             SessionService sessionService,
             PenaltyPaidService penaltyPaidService,
-            PenaltyConfigurationProperties penaltyConfigurationProperties) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+            PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource) {
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
         this.penaltyPaidService = penaltyPaidService;
     }
 

@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.web.pps.controller.pps;
 
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,8 +35,9 @@ public class PenaltyRefStartsWithController extends BaseController {
             NavigatorService navigatorService,
             SessionService sessionService,
             PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource,
             PenaltyRefStartsWithService penaltyRefStartsWithService) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
         this.penaltyRefStartsWithService = penaltyRefStartsWithService;
     }
 

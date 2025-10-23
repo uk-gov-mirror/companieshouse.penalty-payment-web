@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.web.pps.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,6 +17,7 @@ import uk.gov.companieshouse.web.pps.util.PenaltyUtils;
 
 import java.util.Map;
 
+import static java.util.Locale.UK;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SIGN_OUT_URL_ATTR;
 
 public abstract class BaseController {
@@ -28,6 +30,8 @@ public abstract class BaseController {
     public static final String USER_BAR_ATTR = "userBar";
     public static final String USER_EMAIL_ATTR = "userEmail";
     public static final String USER_SIGN_OUT_URL_ATTR = "userSignoutUrl";
+    public static final String HEADER_TEXT_ATTR = "headerText";
+    public static final String HEADER_URL_ATTR = "headerURL";
     public static final String HIDE_YOUR_DETAILS_ATTR = "hideYourDetails";
     public static final String HIDE_RECENT_FILINGS_ATTR = "hideRecentFilings";
     public static final String PHASE_BANNER_ATTR = "phaseBanner";
@@ -37,11 +41,13 @@ public abstract class BaseController {
     protected final NavigatorService navigatorService;
     protected final SessionService sessionService;
     protected final PenaltyConfigurationProperties penaltyConfigurationProperties;
+    private final MessageSource messageSource;
 
-    protected BaseController(NavigatorService navigatorService, SessionService sessionService, PenaltyConfigurationProperties penaltyConfigurationProperties) {
+    protected BaseController(NavigatorService navigatorService, SessionService sessionService, PenaltyConfigurationProperties penaltyConfigurationProperties, MessageSource messageSource) {
         this.navigatorService = navigatorService;
         this.sessionService = sessionService;
         this.penaltyConfigurationProperties = penaltyConfigurationProperties;
+        this.messageSource = messageSource;
     }
 
     @ModelAttribute("templateName")
@@ -57,6 +63,7 @@ public abstract class BaseController {
 
     protected void addBaseAttributesToModel(Model model, String backUrl, String signOutUrl) {
         addPhaseBannerToModel(model, penaltyConfigurationProperties.getSurveyLink());
+        addServiceBannerToModel(model);
         addUserModel(model, signOutUrl);
         addBackPageAttributeToModel(model, backUrl);
     }
@@ -64,6 +71,7 @@ public abstract class BaseController {
     protected void addBaseAttributesWithoutBackToModel(Model model, Map<String, Object> sessionData,
             String signOutUrl) {
         addPhaseBannerToModel(model, penaltyConfigurationProperties.getSurveyLink());
+        addServiceBannerToModel(model);
         addUserModel(model, signOutUrl, sessionData);
     }
 
@@ -98,6 +106,11 @@ public abstract class BaseController {
         model.addAttribute(PHASE_BANNER_LINK_ATTR, surveyLink);
     }
 
+    protected void addServiceBannerToModel(Model model) {
+        model.addAttribute(HEADER_URL_ATTR, penaltyConfigurationProperties.getServiceBannerLink());
+        model.addAttribute(HEADER_TEXT_ATTR, messageSource.getMessage("penalty.service.banner.text", null, UK));
+    }
+
     protected static void addAttributesToModel(Model model, Map<String, Object> attributes) {
         for (Map.Entry<String, Object> itr : attributes.entrySet()) {
             model.addAttribute(itr.getKey(), itr.getValue());
@@ -111,6 +124,7 @@ public abstract class BaseController {
             } else if (attributes.containsKey(SIGN_OUT_URL_ATTR)) {
                 addBaseAttributesWithoutBackUrlToModel(model, attributes.get(SIGN_OUT_URL_ATTR));
             }
+            addServiceBannerToModel(model);
         });
     }
 

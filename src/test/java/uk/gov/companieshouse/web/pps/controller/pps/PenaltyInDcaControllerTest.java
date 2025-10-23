@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -39,6 +40,9 @@ class PenaltyInDcaControllerTest {
     @Mock
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
+    @Mock
+    private MessageSource mockMessageSource;
+
     private static final String PENALTY_IN_DCA_PATH = "/pay-penalty/company/" + COMPANY_NUMBER + "/penalty/" + PENALTY_REF + "/penalty-in-dca";
 
     private static final String ENTER_DETAILS_PATH = "/pay-penalty/enter-details";
@@ -48,7 +52,8 @@ class PenaltyInDcaControllerTest {
         PenaltyInDcaController controller = new PenaltyInDcaController(
                 mockNavigatorService,
                 mockSessionService,
-                mockPenaltyConfigurationProperties);
+                mockPenaltyConfigurationProperties,
+                mockMessageSource);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

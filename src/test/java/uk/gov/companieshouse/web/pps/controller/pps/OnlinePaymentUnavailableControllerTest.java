@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -35,6 +36,9 @@ class OnlinePaymentUnavailableControllerTest {
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
     @Mock
+    private MessageSource mockMessageSource;
+
+    @Mock
     private SessionService mockSessionService;
 
     private static final String ONLINE_PAYMENT_UNAVAILABLE_PATH = "/pay-penalty/company/" + COMPANY_NUMBER
@@ -45,7 +49,8 @@ class OnlinePaymentUnavailableControllerTest {
         OnlinePaymentUnavailableController controller = new OnlinePaymentUnavailableController(
                 mockNavigatorService,
                 mockSessionService,
-                mockPenaltyConfigurationProperties);
+                mockPenaltyConfigurationProperties,
+                mockMessageSource);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
