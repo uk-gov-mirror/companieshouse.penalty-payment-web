@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -68,6 +69,9 @@ class EnterDetailsControllerTest {
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
     @Mock
+    private MessageSource mockMessageSource;
+
+    @Mock
     private PenaltyDetailsService mockPenaltyDetailsService;
 
     private static final String ENTER_DETAILS_PATH = "/pay-penalty/enter-details";
@@ -88,6 +92,7 @@ class EnterDetailsControllerTest {
                 mockNavigatorService,
                 mockSessionService,
                 mockPenaltyConfigurationProperties,
+                mockMessageSource,
                 mockEnterDetailsValidator,
                 mockPenaltyDetailsService);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();

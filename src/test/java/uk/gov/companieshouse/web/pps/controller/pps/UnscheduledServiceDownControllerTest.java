@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -40,12 +41,16 @@ class UnscheduledServiceDownControllerTest {
     @Mock
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
+    @Mock
+    private MessageSource mockMessageSource;
+
     @BeforeEach
     void setup() {
         UnscheduledServiceDownController controller = new UnscheduledServiceDownController(
                 mockNavigatorService,
                 mockSessionService,
-                mockPenaltyConfigurationProperties
+                mockPenaltyConfigurationProperties,
+                mockMessageSource
         );
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }

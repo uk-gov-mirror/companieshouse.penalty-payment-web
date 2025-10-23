@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.web.pps.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,6 +17,7 @@ import uk.gov.companieshouse.web.pps.util.PenaltyUtils;
 
 import java.util.Map;
 
+import static java.util.Locale.UK;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SIGN_OUT_URL_ATTR;
 
 public abstract class BaseController {
@@ -36,14 +38,18 @@ public abstract class BaseController {
     public static final String PHASE_BANNER_NEW_CONTENT_ATTR = "phaseBannerNewContent";
     public static final String PHASE_BANNER_LINK_ATTR = "phaseBannerLink";
 
+    public static final String HEADER_TEXT_PROPERTIES ="penalty.service.banner.text";
+
     protected final NavigatorService navigatorService;
     protected final SessionService sessionService;
     protected final PenaltyConfigurationProperties penaltyConfigurationProperties;
+    private final MessageSource messageSource;
 
-    protected BaseController(NavigatorService navigatorService, SessionService sessionService, PenaltyConfigurationProperties penaltyConfigurationProperties) {
+    protected BaseController(NavigatorService navigatorService, SessionService sessionService, PenaltyConfigurationProperties penaltyConfigurationProperties, MessageSource messageSource) {
         this.navigatorService = navigatorService;
         this.sessionService = sessionService;
         this.penaltyConfigurationProperties = penaltyConfigurationProperties;
+        this.messageSource = messageSource;
     }
 
     @ModelAttribute("templateName")
@@ -104,7 +110,7 @@ public abstract class BaseController {
 
     protected void addServiceBannerToModel(Model model) {
         model.addAttribute(HEADER_URL_ATTR, penaltyConfigurationProperties.getServiceBannerLink());
-        model.addAttribute(HEADER_TEXT_ATTR, penaltyConfigurationProperties.getServiceBannerText());
+        model.addAttribute(HEADER_TEXT_ATTR, messageSource.getMessage(HEADER_TEXT_PROPERTIES, null, UK));
     }
 
     protected static void addAttributesToModel(Model model, Map<String, Object> attributes) {

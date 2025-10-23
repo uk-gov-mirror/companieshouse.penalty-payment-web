@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.web.pps.controller.pps;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,9 @@ public class OnlinePaymentUnavailableController extends BaseController {
     public OnlinePaymentUnavailableController(
             NavigatorService navigatorService,
             SessionService sessionService,
-            PenaltyConfigurationProperties penaltyConfigurationProperties) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+            PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource) {
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
     }
 
     @Override

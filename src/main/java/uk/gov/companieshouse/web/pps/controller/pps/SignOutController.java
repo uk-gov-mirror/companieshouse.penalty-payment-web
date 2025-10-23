@@ -2,6 +2,7 @@ package uk.gov.companieshouse.web.pps.controller.pps;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,9 @@ public class SignOutController extends BaseController {
             NavigatorService navigatorService,
             SessionService sessionService,
             PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource,
             SignOutService signOutService) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
         this.signOutService = signOutService;
     }
 

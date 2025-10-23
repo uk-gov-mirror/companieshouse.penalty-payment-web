@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -58,6 +59,9 @@ class PenaltyRefStartsWithControllerTest {
     @Mock
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
+    @Mock
+    private MessageSource mockMessageSource;
+
     private static final String SELECTED_PENALTY_REFERENCE = "selectedPenaltyReference";
     private static final String REF_STARTS_WITH_PATH = "?ref-starts-with=%s";
 
@@ -67,6 +71,7 @@ class PenaltyRefStartsWithControllerTest {
                 mockNavigatorService,
                 mockSessionService,
                 mockPenaltyConfigurationProperties,
+                mockMessageSource,
                 mockPenaltyRefStartsWithService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 

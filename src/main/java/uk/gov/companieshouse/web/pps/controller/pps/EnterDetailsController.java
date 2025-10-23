@@ -2,6 +2,7 @@ package uk.gov.companieshouse.web.pps.controller.pps;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,9 +39,10 @@ public class EnterDetailsController extends BaseController {
             NavigatorService navigatorService,
             SessionService sessionService,
             PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource,
             EnterDetailsValidator enterDetailsValidator,
             PenaltyDetailsService penaltyDetailsService) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
         this.enterDetailsValidator = enterDetailsValidator;
         this.penaltyDetailsService = penaltyDetailsService;
     }

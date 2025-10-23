@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -64,6 +65,9 @@ class PenaltyPaidControllerTest {
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
     @Mock
+    private MessageSource mockMessageSource;
+
+    @Mock
     private SessionService mockSessionService;
 
     @Mock
@@ -78,7 +82,8 @@ class PenaltyPaidControllerTest {
                 mockNavigatorService,
                 mockSessionService,
                 mockPenaltyPaidService,
-                mockPenaltyConfigurationProperties);
+                mockPenaltyConfigurationProperties,
+                mockMessageSource);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

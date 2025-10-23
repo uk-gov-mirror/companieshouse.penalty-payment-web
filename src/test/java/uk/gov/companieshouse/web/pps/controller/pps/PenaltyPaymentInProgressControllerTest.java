@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -37,6 +38,9 @@ class PenaltyPaymentInProgressControllerTest {
     @Mock
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
+    @Mock
+    private MessageSource mockMessageSource;
+
     private static final String COMPANY_NUMBER = "12345678";
     private static final String PENALTY_REF = "A4444444";
 
@@ -49,7 +53,8 @@ class PenaltyPaymentInProgressControllerTest {
         PenaltyPaymentInProgressController controller = new PenaltyPaymentInProgressController(
                 mockNavigatorService,
                 mockSessionService,
-                mockPenaltyConfigurationProperties);
+                mockPenaltyConfigurationProperties,
+                mockMessageSource);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

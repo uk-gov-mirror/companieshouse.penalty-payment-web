@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
@@ -72,6 +73,9 @@ class ConfirmationControllerTest {
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
     @Mock
+    private MessageSource mockMessageSource;
+
+    @Mock
     private ConfirmationService mockConfirmationService;
 
     private static final String VIEW_CONFIRMATION_PATH_LFP =
@@ -100,6 +104,7 @@ class ConfirmationControllerTest {
                 mockNavigatorService,
                 mockSessionService,
                 mockPenaltyConfigurationProperties,
+                mockMessageSource,
                 mockConfirmationService
         );
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();

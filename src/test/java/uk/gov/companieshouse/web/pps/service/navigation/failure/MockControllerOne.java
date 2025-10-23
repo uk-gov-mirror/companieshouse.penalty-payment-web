@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.web.pps.service.navigation.failure;
 
+import org.springframework.context.MessageSource;
 import uk.gov.companieshouse.web.pps.annotation.NextController;
 import uk.gov.companieshouse.web.pps.config.PenaltyConfigurationProperties;
 import uk.gov.companieshouse.web.pps.controller.BaseController;
@@ -18,8 +19,9 @@ public class MockControllerOne extends BaseController {
     public MockControllerOne(
             NavigatorService navigatorService,
             SessionService sessionService,
-            PenaltyConfigurationProperties penaltyConfigurationProperties) {
-        super(navigatorService, sessionService, penaltyConfigurationProperties);
+            PenaltyConfigurationProperties penaltyConfigurationProperties,
+            MessageSource messageSource) {
+        super(navigatorService, sessionService, penaltyConfigurationProperties, messageSource);
     }
 
     @Override

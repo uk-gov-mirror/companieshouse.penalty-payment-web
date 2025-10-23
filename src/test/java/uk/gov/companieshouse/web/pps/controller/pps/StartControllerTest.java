@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,6 +51,9 @@ class StartControllerTest {
     private PenaltyConfigurationProperties mockPenaltyConfigurationProperties;
 
     @Mock
+    private MessageSource mockMessageSource;
+
+    @Mock
     private FinanceServiceHealthCheck mockFinanceServiceHealthCheck;
 
     private static final String PAY_PENALTY_START_PATH = "/pay-penalty";
@@ -62,6 +66,7 @@ class StartControllerTest {
                 mockNavigatorService,
                 mockSessionService,
                 mockPenaltyConfigurationProperties,
+                mockMessageSource,
                 mockFinanceServiceHealthCheck);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setViewResolvers(viewResolver()).build();
     }
