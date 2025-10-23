@@ -38,8 +38,6 @@ public abstract class BaseController {
     public static final String PHASE_BANNER_NEW_CONTENT_ATTR = "phaseBannerNewContent";
     public static final String PHASE_BANNER_LINK_ATTR = "phaseBannerLink";
 
-    public static final String HEADER_TEXT_PROPERTIES ="penalty.service.banner.text";
-
     protected final NavigatorService navigatorService;
     protected final SessionService sessionService;
     protected final PenaltyConfigurationProperties penaltyConfigurationProperties;
@@ -110,7 +108,7 @@ public abstract class BaseController {
 
     protected void addServiceBannerToModel(Model model) {
         model.addAttribute(HEADER_URL_ATTR, penaltyConfigurationProperties.getServiceBannerLink());
-        model.addAttribute(HEADER_TEXT_ATTR, messageSource.getMessage(HEADER_TEXT_PROPERTIES, null, UK));
+        model.addAttribute(HEADER_TEXT_ATTR, messageSource.getMessage("penalty.service.banner.text", null, UK));
     }
 
     protected static void addAttributesToModel(Model model, Map<String, Object> attributes) {
