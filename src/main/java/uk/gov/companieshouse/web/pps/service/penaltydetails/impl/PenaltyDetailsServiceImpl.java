@@ -92,11 +92,10 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
                         + penaltyConfigurationProperties.getUnscheduledServiceDownPath());
             } else {
                 var enterDetails = new EnterDetails();
-                Map<String, Object> modelAttributes = new HashMap<>();
                 enterDetails.setPenaltyReferenceName(penaltyReference.name());
-                modelAttributes.put(ENTER_DETAILS_MODEL_ATTR, enterDetails);
-                modelAttributes.put(PENALTY_REFERENCE_STARTS_WITH_ATTR, penaltyReferenceStartsWith);
-                serviceResponse.setModelAttributes(modelAttributes);
+                serviceResponse.setModelAttributes(Map.of(
+                        ENTER_DETAILS_MODEL_ATTR, enterDetails,
+                        PENALTY_REFERENCE_STARTS_WITH_ATTR, penaltyReferenceStartsWith));
                 serviceResponse.setBaseModelAttributes(createBaseAttributesUpdate());
             }
         }
