@@ -11,6 +11,7 @@ public class ServiceConstants {
     public static final String PENALTY_REF_ATTR = "penaltyRef";
     public static final String PENALTY_REFERENCE_NAME_ATTR = "penaltyReferenceName";
     public static final String PENALTY_REFERENCE_CHOICE_ATTR = "penaltyReferenceChoice";
+    public static final String PENALTY_REFERENCE_STARTS_WITH_ATTR = "penaltyReferenceStartsWith";
     public static final String REASON_ATTR = "reasonForPenalty";
     public static final String SIGN_OUT_URL_ATTR = "signOutPath";
 

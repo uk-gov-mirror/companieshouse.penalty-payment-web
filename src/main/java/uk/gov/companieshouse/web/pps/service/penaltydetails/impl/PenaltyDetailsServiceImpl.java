@@ -34,6 +34,7 @@ import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLO
 import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_PENDING_ALLOCATION;
 import static uk.gov.companieshouse.web.pps.controller.BaseController.BACK_LINK_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAILS_MODEL_ATTR;
+import static uk.gov.companieshouse.web.pps.service.ServiceConstants.PENALTY_REFERENCE_STARTS_WITH_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SIGN_OUT_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.util.PenaltyReference.SANCTIONS;
 
@@ -92,7 +93,9 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             } else {
                 var enterDetails = new EnterDetails();
                 enterDetails.setPenaltyReferenceName(penaltyReference.name());
-                serviceResponse.setModelAttributes(Map.of(ENTER_DETAILS_MODEL_ATTR, enterDetails));
+                serviceResponse.setModelAttributes(Map.of(
+                        ENTER_DETAILS_MODEL_ATTR, enterDetails,
+                        PENALTY_REFERENCE_STARTS_WITH_ATTR, penaltyReferenceStartsWith));
                 serviceResponse.setBaseModelAttributes(createBaseAttributesUpdate());
             }
         }
