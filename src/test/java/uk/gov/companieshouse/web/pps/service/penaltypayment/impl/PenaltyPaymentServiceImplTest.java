@@ -201,13 +201,13 @@ class PenaltyPaymentServiceImplTest {
         var cost1 = penaltyAndCosts.get(1);
         assertEquals(105, cost1.getOutstanding());
         assertEquals(OTHER_TYPE, cost1.getType());
-        assertEquals(LATE_FILING_OF_ACCOUNTS_REASON, cost1.getReason());
+        assertEquals("", cost1.getReason());
         assertEquals(CLOSED, cost1.getPayableStatus());
 
         var cost2 = penaltyAndCosts.get(2);
         assertEquals(80, cost2.getOutstanding());
         assertEquals(OTHER_TYPE, cost2.getType());
-        assertEquals(LATE_FILING_OF_ACCOUNTS_REASON, cost2.getReason());
+        assertEquals("", cost2.getReason());
         assertEquals(CLOSED, cost2.getPayableStatus());
     }
 
@@ -250,7 +250,7 @@ class PenaltyPaymentServiceImplTest {
         var other = penaltyAndCosts.get(1);
         assertEquals(105, other.getOutstanding());
         assertEquals(OTHER_TYPE, other.getType());
-        assertEquals(PENALTY_REASON, other.getReason());
+        assertEquals("", other.getReason());
         assertEquals(CLOSED, other.getPayableStatus());
     }
 
