@@ -95,7 +95,6 @@ class PenaltyPaymentServiceImplTest {
 
     private static final String LATE_FILING_OF_ACCOUNTS_REASON = "Late filing of accounts";
     private static final String FAILURE_TO_FILE_A_CONFIRMATION_STATEMENT_REASON = "Failure to file a confirmation statement";
-    private static final String PENALTY_REASON = "Penalty";
 
     @BeforeEach
     void init() {
