@@ -138,6 +138,11 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             String msg = String.format("Online payment unavailable for penalty type, company number %s and penalty reference: %s", companyNumber, penaltyRef);
             return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
         }
+        var payablePenalty = payablePenalties.getFirst();
+        if (CLOSED_INSTALMENT_PLAN == payablePenalty.getPayableStatus()) {
+            String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed with instalment plan";
+            return logAndGetRedirectUrl(msg, INSTALMENT_PAGE, companyNumber, penaltyRef);
+        }
         if (penaltyAndCosts.size() > 1) {
             String msg = String.format(
                     "Online payment unavailable as there is not a single payable penalty. "
@@ -156,15 +161,10 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             return logAndGetRedirectUrl(msg, null, companyNumber, penaltyRef);
         }
 
-        var payablePenalty = payablePenalties.getFirst();
         if (CLOSED_PENDING_ALLOCATION == payablePenalty.getPayableStatus()) {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed pending allocation";
             return logAndGetRedirectUrl(msg, PENALTY_PAYMENT_IN_PROGRESS, companyNumber,
                     penaltyRef);
-        }
-        if (CLOSED_INSTALMENT_PLAN == payablePenalty.getPayableStatus()) {
-            String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed with instalment plan";
-            return logAndGetRedirectUrl(msg, INSTALMENT_PAGE, companyNumber, penaltyRef);
         }
         if (TRUE.equals(payablePenalty.getPaid())) {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is paid";
