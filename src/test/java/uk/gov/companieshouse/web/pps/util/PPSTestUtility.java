@@ -139,7 +139,7 @@ public class PPSTestUtility {
         financialPenalty.setPaid(true);
         financialPenalty.setDca(false);
         financialPenalty.setOriginalAmount(VALID_AMOUNT);
-        financialPenalty.setOutstanding(VALID_AMOUNT);
+        financialPenalty.setOutstanding(ZERO_AMOUNT);
         financialPenalty.setType(PENALTY_TYPE);
         financialPenalty.setMadeUpDate(madeUpDate);
         financialPenalty.setReason("Test reason");
