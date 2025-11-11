@@ -142,7 +142,6 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
         var payablePenalties = penaltyAndCosts.stream()
                 .filter(financialPenalty -> penaltyRef.equals(financialPenalty.getId()))
                 .toList();
-
         if (payablePenalties.isEmpty()) {
             String msg = String.format(
                     "No payable penalties for company number %s and penalty ref %s", companyNumber,
