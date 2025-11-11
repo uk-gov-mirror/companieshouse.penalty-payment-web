@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/chsBaseLayout}">
+
+<head>
+  <title>
+    You need to pay another way - Pay a penalty to Companies House - GOV.UK
+  </title>
+</head>
+
+<div id="instalment-page-main-content" layout:fragment="content">
+
+  <form class="form" id="instalment-page">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 id="page-title" class="govuk-heading-xl">
+          <span id="page-title-heading">You need to pay by bank transfer or cheque</span>
+        </h1>
+        <p class="govuk-body">
+          You cannot use this online service to pay this penalty because it has an instalment plan.
+          Pay by bank transfer or cheque instead.
+        </p>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-visually-hidden">Warning</span>
+            If you’ve paid Companies House by bank transfer before, your bank may automatically use the same bank
+            account and it might not be correct. Check you are using the details on this page.
+          </strong>
+        </div>
+        <p class="govuk-body">You’ve told us that your penalty reference starts with A.
+          Use the details on this page to pay this type of penalty.
+        </p>
+
+        <h2 class="govuk-heading-s">Bacs payments</h2>
+        <ul class="govuk-list govuk-list--bullet" id="banking-details">
+          <li>
+            <span class="govuk-!-font-weight-bold">Account name</span>:
+            <span id="late-filing-account-name"
+                  th:if="${penaltyReference == 'LATE_FILING'}"
+                  th:text="${@environment.getProperty('penalty.bank-transfer-late-filing.account-name')}"></span>
+          </li>
+          <li>
+            <span class="govuk-!-font-weight-bold">Sort code</span>:
+            <span id="late-filing-sort-code"
+                  th:if="${penaltyReference == 'LATE_FILING'}"
+                  th:text="${@environment.getProperty('penalty.bank-transfer-late-filing.sort-code')}"></span>
+          </li>
+          <li>
+            <span class="govuk-!-font-weight-bold">Account number</span>:
+            <span id="late-filing-account-number"
+                  th:if="${penaltyReference == 'LATE_FILING'}"
+                  th:text="${@environment.getProperty('penalty.bank-transfer-late-filing.account-number')}"></span>
+          </li>
+          <li>
+            <span class="govuk-!-font-weight-bold">Payment reference</span>: Use your penalty reference, so
+            that we know which penalty you've paid. For example, A1234567.
+            Your payment may be delayed if you use the wrong reference.
+          </li>
+        </ul>
+
+        <h2 class="govuk-heading-s">Overseas payments</h2>
+        <ul class="govuk-list govuk-list--bullet" id="overseas-banking-details">
+          <li>
+            <span class="govuk-!-font-weight-bold">IBAN</span>:
+            <span id="late-filing-iban"
+                  th:if="${penaltyReference == 'LATE_FILING'}"
+                  th:text="${@environment.getProperty('penalty.bank-transfer-late-filing.iban')}"></span>
+          </li>
+          <li>
+            <span class="govuk-!-font-weight-bold">SWIFT code (BIC)</span>:
+            <span id="late-filing-swift-code"
+                  th:if="${penaltyReference == 'LATE_FILING'}"
+                  th:text="${@environment.getProperty('penalty.bank-transfer-late-filing.swift-code')}"></span>
+          </li>
+          <li>
+            <span class="govuk-!-font-weight-bold">Payment reference</span>: Use your penalty reference, so
+            that we know which penalty you've paid. For example, A1234567.
+            Your payment may be delayed if you use the wrong reference.
+          </li>
+        </ul>
+        <h3 class="govuk-heading-s">Payments by cheque</h3>
+        <p class="govuk-body">You can pay by cheque through the post. Make the cheque payable to
+          ‘Companies House only’ and send it to Companies House,
+          with the slip on your penalty notice (‘remittance advice’).
+        </p>
+        <div class="govuk-inset-text">
+          Companies House
+          <br>PO Box 710
+          <br>Crown Way
+          <br>CF14 3UZ
+        </div>
+        <p class="govuk-body">Write the company name and number on the back of the cheque.
+          You’ll find the company number on your penalty notice.
+        </p>
+        <h2 class="govuk-heading-s">What happens next</h2>
+        <p class="govuk-body">Your payment may take up to 4 working days to process.</p>
+        <p class="govuk-body">If you have any questions, you can
+          <a href="https://www.gov.uk/contact-companies-house" class="govuk-link">contact us</a>.</p>
+      </div>
+    </div>
+  </form>
+</div>
+</html>

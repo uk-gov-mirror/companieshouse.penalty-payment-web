@@ -32,6 +32,7 @@ import static java.util.Locale.UK;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED;
 import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_PENDING_ALLOCATION;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_INSTALMENT_PLAN;
 import static uk.gov.companieshouse.web.pps.controller.BaseController.BACK_LINK_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAILS_MODEL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.PENALTY_REFERENCE_STARTS_WITH_ATTR;
@@ -48,6 +49,7 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
     private static final String PENALTY_IN_DCA = "/penalty-in-dca";
     private static final String PENALTY_PAID = "/penalty-paid";
     private static final String PENALTY_PAYMENT_IN_PROGRESS = "/penalty-payment-in-progress";
+    private static final String INSTALMENT_PAGE = "/instalment-page";
     private final CompanyService companyService;
     private final FeatureFlagChecker featureFlagChecker;
     private final MessageSource messageSource;
@@ -159,6 +161,10 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed pending allocation";
             return logAndGetRedirectUrl(msg, PENALTY_PAYMENT_IN_PROGRESS, companyNumber,
                     penaltyRef);
+        }
+        if (CLOSED_INSTALMENT_PLAN == payablePenalty.getPayableStatus()) {
+            String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed with instalment plan";
+            return logAndGetRedirectUrl(msg, INSTALMENT_PAGE, companyNumber, penaltyRef);
         }
         if (TRUE.equals(payablePenalty.getPaid())) {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is paid";
