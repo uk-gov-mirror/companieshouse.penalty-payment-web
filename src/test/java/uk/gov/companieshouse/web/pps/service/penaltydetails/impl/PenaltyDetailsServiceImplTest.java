@@ -48,9 +48,12 @@ import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAI
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SERVICE_UNAVAILABLE_VIEW_NAME;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SIGN_OUT_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.COMPANY_NUMBER;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.OTHER_TYPE;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.PENALTY_REF;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.PENALTY_TYPE;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.SIGN_OUT_PATH;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.UNSCHEDULED_SERVICE_DOWN_PATH;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.VALID_LATE_FILING_REASON;
 import static uk.gov.companieshouse.web.pps.util.PenaltyReference.LATE_FILING;
 import static uk.gov.companieshouse.web.pps.util.PenaltyReference.SANCTIONS;
 
@@ -533,20 +536,20 @@ class PenaltyDetailsServiceImplTest {
 
         FinancialPenalty originalPenalty = PPSTestUtility.instalmentPlanPenalty(
                 PENALTY_REF,
-                "2024-12-31"
+                "2024-12-31",
+                PENALTY_TYPE,
+                VALID_LATE_FILING_REASON,
+                CLOSED_INSTALMENT_PLAN
         );
-        originalPenalty.setType("penalty");
-        originalPenalty.setReason("Late filing of accounts");
-        originalPenalty.setPayableStatus(CLOSED_INSTALMENT_PLAN);
         instalmentPlanPenalty.add(originalPenalty);
 
         FinancialPenalty instalmentPlanTransaction = PPSTestUtility.instalmentPlanPenalty(
                 PENALTY_REF,
-                "2024-12-31"
+                "2024-12-31",
+                OTHER_TYPE,
+                "",
+                CLOSED
         );
-        instalmentPlanTransaction.setType("other");
-        instalmentPlanTransaction.setReason("");
-        instalmentPlanTransaction.setPayableStatus(CLOSED);
         instalmentPlanPenalty.add(instalmentPlanTransaction);
 
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))

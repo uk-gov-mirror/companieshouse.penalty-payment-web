@@ -7,6 +7,7 @@ import uk.gov.companieshouse.api.model.financialpenalty.FinancialPenalties;
 import uk.gov.companieshouse.api.model.financialpenalty.FinancialPenalty;
 import uk.gov.companieshouse.api.model.financialpenalty.PayableFinancialPenalties;
 import uk.gov.companieshouse.api.model.financialpenalty.PayableFinancialPenaltySession;
+import uk.gov.companieshouse.api.model.financialpenalty.PayableStatus;
 import uk.gov.companieshouse.api.model.financialpenalty.Payment;
 import uk.gov.companieshouse.api.model.financialpenalty.TransactionPayableFinancialPenalty;
 
@@ -133,17 +134,17 @@ public class PPSTestUtility {
         return financialPenalty;
     }
 
-    public static FinancialPenalty instalmentPlanPenalty(String id, String madeUpDate) {
+    public static FinancialPenalty instalmentPlanPenalty(String id, String madeUpDate, String type, String reason, PayableStatus payableStatus) {
         FinancialPenalty financialPenalty = new FinancialPenalty();
         financialPenalty.setId(id);
         financialPenalty.setPaid(true);
         financialPenalty.setDca(false);
         financialPenalty.setOriginalAmount(VALID_AMOUNT);
         financialPenalty.setOutstanding(ZERO_AMOUNT);
-        financialPenalty.setType(PENALTY_TYPE);
+        financialPenalty.setType(type);
         financialPenalty.setMadeUpDate(madeUpDate);
-        financialPenalty.setReason("Test reason");
-        financialPenalty.setPayableStatus(CLOSED_INSTALMENT_PLAN);
+        financialPenalty.setReason(reason);
+        financialPenalty.setPayableStatus(payableStatus);
 
         return financialPenalty;
     }
