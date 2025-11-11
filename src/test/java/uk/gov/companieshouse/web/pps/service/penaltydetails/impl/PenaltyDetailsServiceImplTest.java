@@ -41,14 +41,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_INSTALMENT_PLAN;
 import static uk.gov.companieshouse.web.pps.controller.BaseController.BACK_LINK_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAILS_MODEL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SERVICE_UNAVAILABLE_VIEW_NAME;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SIGN_OUT_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.COMPANY_NUMBER;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.OTHER_TYPE;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.PENALTY_REF;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.PENALTY_TYPE;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.SIGN_OUT_PATH;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.UNSCHEDULED_SERVICE_DOWN_PATH;
+import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.VALID_LATE_FILING_REASON;
 import static uk.gov.companieshouse.web.pps.util.PenaltyReference.LATE_FILING;
 import static uk.gov.companieshouse.web.pps.util.PenaltyReference.SANCTIONS;
 
@@ -102,6 +107,10 @@ class PenaltyDetailsServiceImplTest {
     private static final String PENALTY_PAYMENT_IN_PROGRESS_PATH =
             REDIRECT_URL_PREFIX + "/pay-penalty/company/" + COMPANY_NUMBER + "/penalty/"
                     + PENALTY_REF + "/penalty-payment-in-progress";
+
+    private static final String INSTALMENT_PLAN_PATH =
+            REDIRECT_URL_PREFIX + "/pay-penalty/company/" + COMPANY_NUMBER + "/penalty/"
+            + PENALTY_REF + "/instalment-plan";
 
     @ParameterizedTest
     @EnumSource(PenaltyReference.class)
@@ -401,6 +410,20 @@ class PenaltyDetailsServiceImplTest {
         assertRedirect(serviceResponse, ONLINE_PAYMENT_UNAVAILABLE_PATH, COMPANY_NUMBER);
     }
 
+    @Test
+    @DisplayName("Post Details failure - penalty in instalment plan")
+    void postDetailsWithInstalmentPlan() throws Exception {
+        configureAppendCompanyNumber(COMPANY_NUMBER);
+        configureInstalmentPlanPenalty();
+
+        PPSServiceResponse serviceResponse = penaltyDetailsService
+                .postEnterDetails(
+                        buildEnterDetails(COMPANY_NUMBER, PENALTY_REF, LATE_FILING.name()), false,
+                        enterDetailsControllerClass);
+
+        assertRedirect(serviceResponse, INSTALMENT_PLAN_PATH, COMPANY_NUMBER);
+    }
+
     @ParameterizedTest
     @CsvSource({
             "LATE_FILING, 12345678, A1234567",
@@ -506,6 +529,31 @@ class PenaltyDetailsServiceImplTest {
 
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))
                 .thenReturn(disabledFinancialPenalty);
+    }
+
+    private void configureInstalmentPlanPenalty() throws ServiceException {
+        List<FinancialPenalty> instalmentPlanPenalty = new ArrayList<>();
+
+        FinancialPenalty originalPenalty = PPSTestUtility.instalmentPlanPenalty(
+                PENALTY_REF,
+                "2024-12-31",
+                PENALTY_TYPE,
+                VALID_LATE_FILING_REASON,
+                CLOSED_INSTALMENT_PLAN
+        );
+        instalmentPlanPenalty.add(originalPenalty);
+
+        FinancialPenalty instalmentPlanTransaction = PPSTestUtility.instalmentPlanPenalty(
+                PENALTY_REF,
+                "2024-12-31",
+                OTHER_TYPE,
+                "",
+                CLOSED
+        );
+        instalmentPlanPenalty.add(instalmentPlanTransaction);
+
+        when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))
+                .thenReturn(instalmentPlanPenalty);
     }
 
     private void assertRedirect(PPSServiceResponse serviceResponse, String expectedRedirectUrl,

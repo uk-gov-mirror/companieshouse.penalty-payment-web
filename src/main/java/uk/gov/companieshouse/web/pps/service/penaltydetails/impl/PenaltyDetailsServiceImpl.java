@@ -19,18 +19,19 @@ import uk.gov.companieshouse.web.pps.service.penaltypayment.PenaltyPaymentServic
 import uk.gov.companieshouse.web.pps.service.response.PPSServiceResponse;
 import uk.gov.companieshouse.web.pps.util.FeatureFlagChecker;
 import uk.gov.companieshouse.web.pps.util.PenaltyReference;
+import uk.gov.companieshouse.web.pps.util.PenaltyUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import uk.gov.companieshouse.web.pps.util.PenaltyUtils;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Locale.UK;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_INSTALMENT_PLAN;
 import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_PENDING_ALLOCATION;
 import static uk.gov.companieshouse.web.pps.controller.BaseController.BACK_LINK_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAILS_MODEL_ATTR;
@@ -48,6 +49,7 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
     private static final String PENALTY_IN_DCA = "/penalty-in-dca";
     private static final String PENALTY_PAID = "/penalty-paid";
     private static final String PENALTY_PAYMENT_IN_PROGRESS = "/penalty-payment-in-progress";
+    private static final String INSTALMENT_PLAN = "/instalment-plan";
     private final CompanyService companyService;
     private final FeatureFlagChecker featureFlagChecker;
     private final MessageSource messageSource;
@@ -136,13 +138,6 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             String msg = String.format("Online payment unavailable for penalty type, company number %s and penalty reference: %s", companyNumber, penaltyRef);
             return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
         }
-        if (penaltyAndCosts.size() > 1) {
-            String msg = String.format(
-                    "Online payment unavailable as there is not a single payable penalty. "
-                            + "There are %s penalty and costs for company number %s and penalty reference: %s",
-                    penaltyAndCosts.size(), companyNumber, penaltyRef);
-            return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
-        }
 
         var payablePenalties = penaltyAndCosts.stream()
                 .filter(financialPenalty -> penaltyRef.equals(financialPenalty.getId()))
@@ -155,6 +150,19 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
         }
 
         var payablePenalty = payablePenalties.getFirst();
+
+        if (CLOSED_INSTALMENT_PLAN == payablePenalty.getPayableStatus()) {
+            String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed with instalment plan";
+            return logAndGetRedirectUrl(msg, INSTALMENT_PLAN, companyNumber, penaltyRef);
+        }
+        if (penaltyAndCosts.size() > 1) {
+            String msg = String.format(
+                    "Online payment unavailable as there is not a single payable penalty. "
+                            + "There are %s penalty and costs for company number %s and penalty reference: %s",
+                    penaltyAndCosts.size(), companyNumber, penaltyRef);
+            return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
+        }
+
         if (CLOSED_PENDING_ALLOCATION == payablePenalty.getPayableStatus()) {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed pending allocation";
             return logAndGetRedirectUrl(msg, PENALTY_PAYMENT_IN_PROGRESS, companyNumber,
