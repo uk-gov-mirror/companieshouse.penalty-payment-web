@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static uk.gov.companieshouse.web.pps.controller.pps.InstalmentPageController.INSTALMENT_PAGE_TEMPLATE_NAME;
+import static uk.gov.companieshouse.web.pps.controller.pps.InstalmentPlanController.INSTALMENT_PLAN_TEMPLATE_NAME;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.BACK_LINK_MODEL_ATTR;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.COMPANY_NUMBER;
 import static uk.gov.companieshouse.web.pps.util.PPSTestUtility.PENALTY_REF;
@@ -26,11 +26,11 @@ import uk.gov.companieshouse.web.pps.session.SessionService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class InstalmentPageControllerTest {
+class InstalmentPlanControllerTest {
 
     private MockMvc mockMvc;
 
-    @InjectMocks private InstalmentPageController controller;
+    @InjectMocks private InstalmentPlanController controller;
 
     @Mock
     private NavigatorService mockNavigatorService;
@@ -44,8 +44,8 @@ class InstalmentPageControllerTest {
     @Mock
     private SessionService mockSessionService;
 
-    private static final String INSTALMENT_PAGE_PATH = "/pay-penalty/company/" + COMPANY_NUMBER
-            + "/penalty/" + PENALTY_REF + "/instalment-page";
+    private static final String INSTALMENT_PLAN_PATH = "/pay-penalty/company/" + COMPANY_NUMBER
+            + "/penalty/" + PENALTY_REF + "/instalment-plan";
 
     @BeforeEach
     void setup() {
@@ -53,12 +53,12 @@ class InstalmentPageControllerTest {
     }
 
     @Test
-    @DisplayName("Get Instalment Page - success path")
+    @DisplayName("Get Instalment Plan - success path")
     void getRequestSuccess() throws Exception {
 
-        this.mockMvc.perform(get(INSTALMENT_PAGE_PATH))
+        this.mockMvc.perform(get(INSTALMENT_PLAN_PATH))
                 .andExpect(status().isOk())
-                .andExpect(view().name(INSTALMENT_PAGE_TEMPLATE_NAME))
+                .andExpect(view().name(INSTALMENT_PLAN_TEMPLATE_NAME))
                 .andExpect(model().attributeExists(BACK_LINK_MODEL_ATTR));
     }
 

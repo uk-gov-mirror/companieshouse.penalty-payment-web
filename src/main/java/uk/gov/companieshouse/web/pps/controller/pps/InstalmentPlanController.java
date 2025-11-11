@@ -13,14 +13,14 @@ import uk.gov.companieshouse.web.pps.session.SessionService;
 import uk.gov.companieshouse.web.pps.util.PenaltyUtils;
 
 @Controller
-@RequestMapping("/pay-penalty/company/{companyNumber}/penalty/{penaltyRef}/instalment-page")
-public class InstalmentPageController extends BaseController {
+@RequestMapping("/pay-penalty/company/{companyNumber}/penalty/{penaltyRef}/instalment-plan")
+public class InstalmentPlanController extends BaseController {
 
-    static final String INSTALMENT_PAGE_TEMPLATE_NAME = "pps/instalmentPage";
+    static final String INSTALMENT_PLAN_TEMPLATE_NAME = "pps/instalmentPlan";
 
     private static final String PENALTY_REFERENCE_MODEL_ATTR = "penaltyReference";
 
-    public InstalmentPageController(
+    public InstalmentPlanController(
             NavigatorService navigatorService,
             SessionService sessionService,
             PenaltyConfigurationProperties penaltyConfigurationProperties,
@@ -30,13 +30,13 @@ public class InstalmentPageController extends BaseController {
 
     @Override
     protected String getTemplateName() {
-        return INSTALMENT_PAGE_TEMPLATE_NAME;
+        return INSTALMENT_PLAN_TEMPLATE_NAME;
     }
 
     @GetMapping
-    public String getInstalmentPage(@PathVariable String companyNumber,
-                                              @PathVariable String penaltyRef,
-                                              Model model) {
+    public String getInstalmentPlan(@PathVariable String companyNumber,
+                                    @PathVariable String penaltyRef,
+                                    Model model) {
 
         var penaltyReference = PenaltyUtils.getPenaltyReferenceType(penaltyRef);
         model.addAttribute(PENALTY_REFERENCE_MODEL_ATTR, penaltyReference.name());
