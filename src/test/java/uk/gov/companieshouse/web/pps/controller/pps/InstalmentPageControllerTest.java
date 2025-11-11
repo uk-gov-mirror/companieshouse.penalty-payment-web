@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +29,8 @@ import uk.gov.companieshouse.web.pps.session.SessionService;
 class InstalmentPageControllerTest {
 
     private MockMvc mockMvc;
+
+    @InjectMocks private InstalmentPageController controller;
 
     @Mock
     private NavigatorService mockNavigatorService;
@@ -45,12 +48,7 @@ class InstalmentPageControllerTest {
             + "/penalty/" + PENALTY_REF + "/instalment-page";
 
     @BeforeEach
-    public void setup() {
-        InstalmentPageController controller = new InstalmentPageController(
-                mockNavigatorService,
-                mockSessionService,
-                mockPenaltyConfigurationProperties,
-                mockMessageSource);
+    void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
