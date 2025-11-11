@@ -138,7 +138,20 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
             String msg = String.format("Online payment unavailable for penalty type, company number %s and penalty reference: %s", companyNumber, penaltyRef);
             return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
         }
+
+        var payablePenalties = penaltyAndCosts.stream()
+                .filter(financialPenalty -> penaltyRef.equals(financialPenalty.getId()))
+                .toList();
+
+        if (payablePenalties.isEmpty()) {
+            String msg = String.format(
+                    "No payable penalties for company number %s and penalty ref %s", companyNumber,
+                    penaltyRef);
+            return logAndGetRedirectUrl(msg, null, companyNumber, penaltyRef);
+        }
+
         var payablePenalty = payablePenalties.getFirst();
+
         if (CLOSED_INSTALMENT_PLAN == payablePenalty.getPayableStatus()) {
             String msg = PAYABLE_PENALTY + payablePenalty.getId() + " is closed with instalment plan";
             return logAndGetRedirectUrl(msg, INSTALMENT_PAGE, companyNumber, penaltyRef);
@@ -149,16 +162,6 @@ public class PenaltyDetailsServiceImpl implements PenaltyDetailsService {
                             + "There are %s penalty and costs for company number %s and penalty reference: %s",
                     penaltyAndCosts.size(), companyNumber, penaltyRef);
             return logAndGetRedirectUrl(msg, ONLINE_PAYMENT_UNAVAILABLE, companyNumber, penaltyRef);
-        }
-
-        var payablePenalties = penaltyAndCosts.stream()
-                .filter(financialPenalty -> penaltyRef.equals(financialPenalty.getId()))
-                .toList();
-        if (payablePenalties.isEmpty()) {
-            String msg = String.format(
-                    "No payable penalties for company number %s and penalty ref %s", companyNumber,
-                    penaltyRef);
-            return logAndGetRedirectUrl(msg, null, companyNumber, penaltyRef);
         }
 
         if (CLOSED_PENDING_ALLOCATION == payablePenalty.getPayableStatus()) {
