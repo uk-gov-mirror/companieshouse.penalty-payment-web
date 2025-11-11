@@ -41,6 +41,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED;
+import static uk.gov.companieshouse.api.model.financialpenalty.PayableStatus.CLOSED_INSTALMENT_PLAN;
 import static uk.gov.companieshouse.web.pps.controller.BaseController.BACK_LINK_URL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.ENTER_DETAILS_MODEL_ATTR;
 import static uk.gov.companieshouse.web.pps.service.ServiceConstants.SERVICE_UNAVAILABLE_VIEW_NAME;
@@ -526,11 +528,26 @@ class PenaltyDetailsServiceImplTest {
                 .thenReturn(disabledFinancialPenalty);
     }
 
-    private void configureInstalmentPlanPenalty()
-            throws ServiceException {
+    private void configureInstalmentPlanPenalty() throws ServiceException {
         List<FinancialPenalty> instalmentPlanPenalty = new ArrayList<>();
-        instalmentPlanPenalty.add(PPSTestUtility.instalmentPlanPenalty(PENALTY_REF,
-                now().minusYears(1).toString()));
+
+        FinancialPenalty originalPenalty = PPSTestUtility.instalmentPlanPenalty(
+                PENALTY_REF,
+                "2024-12-31"
+        );
+        originalPenalty.setType("penalty");
+        originalPenalty.setReason("Late filing of accounts");
+        originalPenalty.setPayableStatus(CLOSED_INSTALMENT_PLAN);
+        instalmentPlanPenalty.add(originalPenalty);
+
+        FinancialPenalty instalmentPlanTransaction = PPSTestUtility.instalmentPlanPenalty(
+                PENALTY_REF,
+                "2024-12-31"
+        );
+        instalmentPlanTransaction.setType("other");
+        instalmentPlanTransaction.setReason("");
+        instalmentPlanTransaction.setPayableStatus(CLOSED);
+        instalmentPlanPenalty.add(instalmentPlanTransaction);
 
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))
                 .thenReturn(instalmentPlanPenalty);
