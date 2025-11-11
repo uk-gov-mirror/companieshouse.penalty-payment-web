@@ -103,6 +103,10 @@ class PenaltyDetailsServiceImplTest {
             REDIRECT_URL_PREFIX + "/pay-penalty/company/" + COMPANY_NUMBER + "/penalty/"
                     + PENALTY_REF + "/penalty-payment-in-progress";
 
+    private static final String INSTALMENT_PLAN_PATH =
+            REDIRECT_URL_PREFIX + "/pay-penalty/company/" + COMPANY_NUMBER + "/penalty/"
+            + PENALTY_REF + "/instalment-plan";
+
     @ParameterizedTest
     @EnumSource(PenaltyReference.class)
     @DisplayName("Get Details - Successful")
@@ -401,6 +405,20 @@ class PenaltyDetailsServiceImplTest {
         assertRedirect(serviceResponse, ONLINE_PAYMENT_UNAVAILABLE_PATH, COMPANY_NUMBER);
     }
 
+    @Test
+    @DisplayName("Post Details failure - penalty in instalment plan")
+    void postDetailsWithInstalmentPlan() throws Exception {
+        configureAppendCompanyNumber(COMPANY_NUMBER);
+        configureInstalmentPlanPenalty();
+
+        PPSServiceResponse serviceResponse = penaltyDetailsService
+                .postEnterDetails(
+                        buildEnterDetails(COMPANY_NUMBER, PENALTY_REF, LATE_FILING.name()), false,
+                        enterDetailsControllerClass);
+
+        assertRedirect(serviceResponse, INSTALMENT_PLAN_PATH, COMPANY_NUMBER);
+    }
+
     @ParameterizedTest
     @CsvSource({
             "LATE_FILING, 12345678, A1234567",
@@ -506,6 +524,16 @@ class PenaltyDetailsServiceImplTest {
 
         when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))
                 .thenReturn(disabledFinancialPenalty);
+    }
+
+    private void configureInstalmentPlanPenalty()
+            throws ServiceException {
+        List<FinancialPenalty> instalmentPlanPenalty = new ArrayList<>();
+        instalmentPlanPenalty.add(PPSTestUtility.instalmentPlanPenalty(PENALTY_REF,
+                now().minusYears(1).toString()));
+
+        when(mockPenaltyPaymentService.getFinancialPenalties(COMPANY_NUMBER, PENALTY_REF))
+                .thenReturn(instalmentPlanPenalty);
     }
 
     private void assertRedirect(PPSServiceResponse serviceResponse, String expectedRedirectUrl,
